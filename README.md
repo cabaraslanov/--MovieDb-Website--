@@ -1,3 +1,3 @@
 # --MovieDb-Website--
 
-## `${https://moviedb-website.netlify.app/}`
+https://moviedb-website.netlify.app/
