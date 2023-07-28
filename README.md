@@ -1,4 +1,4 @@
 # --MovieDb-Website--
 
-# `moviedb-website.netlify.app`
+moviedb-website.netlify.app
 
