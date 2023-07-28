@@ -1,0 +1,154 @@
+import { Card } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import Star from '../components/Main/Cards/Star/Star';
+import Heart from '../components/Header/Navbar/Heart/Heart';
+import Tag from "../components/Header/Navbar/Tag/Tag"
+import { Header } from 'antd/es/layout/layout';
+import HeartFull from '../components/Header/Navbar/Heart/HeartFull';
+import { AiFillHeart } from 'react-icons/ai';
+import { setCardMap, setHeartFilter } from '../store/feature/countertSlice';
+
+const FavoritList = () => {
+  const API_IMG = "https://image.tmdb.org/t/p/w500";
+
+  const selector = useSelector(state=>state.counterData);
+  const dispatch = useDispatch();
+  // console.log(selector.cardMap);
+
+
+
+  const favorit = (id)=>{
+  //  let filtered = selector.cardMap.filter((filt)=>filt.id !== id);
+
+  dispatch(setHeartFilter(filtered));
+  dispatch(setCardMap())
+  }
+
+
+  const heartFilt = (id)=>{
+  let filtered2 = selector.heartFilter.filter((filt)=>filt.id !== id);
+
+    dispatch(setHeartFilter(filtered2));
+    
+  }
+  // if (myFilterHeart([])) {
+  //   dispatch(myCardMap([]))
+  // }
+// console.log(selector.heartFilter,"filterHeart");
+// if (selector.heartFilter.length === 0) {
+//   <div className='favorite h-screen text-4xl'>
+//   <p className='tracking-widest'>Your favoritlist is empty</p>
+// </div>
+// }
+
+  return (
+        <div className="flex h-auto flex-wrap justify-between  main mt-16   gap-5 md:px-20 lg:px-40 px-10">
+    
+    
+
+    {
+selector.heartFilter ?
+      (
+      selector.heartFilter.length > 0 ? 
+
+       selector.heartFilter?.map((item,index)=>{
+
+        return(
+
+          <div key={index}>
+        
+          <Card
+            className="card p-2 border-none relative  "
+            hoverable
+            style={{ width: 250 }}
+            cover={<NavLink to={`details/${item.id}`}> <img alt="example" src={API_IMG + item.poster_path} /></NavLink>}
+          >
+            <div className="flex gap-28 absolute left-5 top-4 text-2xl text-orange-400">
+              <div className="flex items-center gap-1 bg-gray-800/80 rounded-md px-1">
+                <Star /> {item.vote_average}
+              </div>
+
+              <div  className="flex items-center gap-1 bg-gray-800/80 rounded-md p-1 right-0">
+                 {/* <Heart/> */}
+                 <AiFillHeart onClick={()=>heartFilt(item.id)}/>
+                  {/* {console.log(selector.heartBoolean)} */}
+                  {/*  */}
+                </div>
+            </div>
+
+            <div className="flex justify-between align-middle pt-4">
+              <div className="text-lg text-white">
+                {item.title}
+              </div>
+              <div className="flex text-2xl align-middle text-orange-400">
+                <Tag />
+              </div>
+            </div>
+          </Card>
+      </div>
+        )
+      })
+
+      :
+      <div className='favorite h-screen text-4xl'>
+        <p className='tracking-widest'>Your favoritlist is empty</p>
+      </div>
+      )
+      :
+      (
+        selector.cardMap?.map((item,index)=>{
+                console.log(item);
+                return(
+                  <div key={index}>
+                
+                  <Card
+                    className="card p-2 border-none relative  "
+                    hoverable
+                    style={{ width: 250 }}
+                    cover={<NavLink to={`details/${item.id}`}> <img alt="example" src={API_IMG + item.poster_path} /></NavLink>}
+                  >
+                    <div className="flex gap-28 absolute left-5 top-4 text-2xl text-orange-400">
+                      <div className="flex items-center gap-1 bg-gray-800/80 rounded-md px-1">
+                        <Star /> {item.vote_average}
+                      </div>
+              
+                      <div  className="flex items-center gap-1 bg-gray-800/80 rounded-md p-1 right-0">
+                         {/* <Heart/> */}
+                         <AiFillHeart onClick={()=>favorit(item.id)}/>
+                          {/* {console.log(selector.heartBoolean)} */}
+                          {/*  */}
+                        </div>
+                    </div>
+              
+                    <div className="flex justify-between align-middle pt-4">
+                      <div className="text-lg text-white">
+                        {item.title}
+                      </div>
+                      <div className="flex text-2xl align-middle text-orange-400">
+                        <Tag />
+                      </div>
+                    </div>
+                  </Card>
+              </div>
+                )
+              })
+
+  
+      )
+}
+
+
+
+
+
+
+{/* <div className='favorite h-screen text-4xl'>
+        <p className='tracking-widest'>Your favoritlist is empty</p>
+      </div> */}
+    </div>
+  )
+}
+
+export default FavoritList
